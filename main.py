@@ -11,36 +11,35 @@ import pandas as pd
 
 x = pd.read_excel(r"C:\Users\Luan\Downloads\challenge.xlsx", engine='openpyxl')
 
-def preenche_dados(ng_reflect_name, dado):
+def fill_in_fields(ng_reflect_name, dado):
   driver.find_element(By.XPATH, (f"//input[@ng-reflect-name='{ng_reflect_name}']")).send_keys(dado)
 
 driver.find_element(By.XPATH, ("//button[.='Start']")).click()
 
-repeticao = 0
-while repeticao < 11:
+rounds = 0
+while rounds < 11:
 
-  primeiro_nome = x.loc[repeticao]['First Name']
-  ultimo_nome = x.loc[repeticao]['Last Name ']
-  nome_empresa = x.loc[repeticao]['Company Name']
-  cargo = x.loc[repeticao]['Role in Company']
-  endereco = x.loc[repeticao]['Address']
-  email = x.loc[repeticao]['Email']
-  numero_telefone = x.loc[repeticao]['Phone Number']
+  primeiro_nome = x.loc[rounds]['First Name']
+  ultimo_nome = x.loc[rounds]['Last Name ']
+  nome_empresa = x.loc[rounds]['Company Name']
+  cargo = x.loc[rounds]['Role in Company']
+  endereco = x.loc[rounds]['Address']
+  email = x.loc[rounds]['Email']
+  numero_telefone = x.loc[rounds]['Phone Number']
 
+  fill_in_fields('labelFirstName', primeiro_nome)
+  fill_in_fields('labelLastName', ultimo_nome)
+  fill_in_fields('labelCompanyName', nome_empresa)
+  fill_in_fields('labelRole', cargo)
+  fill_in_fields('labelAddress', endereco)
+  fill_in_fields('labelEmail', email)
+  fill_in_fields('labelPhone', str(numero_telefone))
 
-  preenche_dados('labelFirstName', primeiro_nome)
-  preenche_dados('labelLastName', ultimo_nome)
-  preenche_dados('labelCompanyName', nome_empresa)
-  preenche_dados('labelRole', cargo)
-  preenche_dados('labelAddress', endereco)
-  preenche_dados('labelEmail', email)
-  preenche_dados('labelPhone', str(numero_telefone))
-
-  time.sleep(0.2)
+  time.sleep(0.5)
 
   driver.find_element(By.XPATH, ("//input[@value='Submit']")).click()
 
-  repeticao = repeticao + 1
+  rounds = rounds + 1
   
   
         
