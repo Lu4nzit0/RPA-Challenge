@@ -1,6 +1,7 @@
 from selenium import webdriver
 from selenium.webdriver.common.by import By
 from selenium.webdriver.common.keys import Keys
+import time
 
 driver = webdriver.Chrome()
 
@@ -10,17 +11,41 @@ import pandas as pd
 
 x = pd.read_excel(r"C:\Users\Luan\Downloads\challenge.xlsx", engine='openpyxl')
 
-primeiro_nome = x.loc[0]['First Name']
-ultimo_nome = x.loc[0]['Last Name ']
-nome_empresa = x.loc[0]['Company Name']
-cargo = x.loc[0]['Role in Company']
-endereco = x.loc[0]['Address']
-email = x.loc[0]['Email']
-numero_telefone = x.loc[0]['Phone Number']
+def preenche_dados(ng_reflect_name, dado):
+  driver.find_element(By.XPATH, (f"//input[@ng-reflect-name='{ng_reflect_name}']")).send_keys(dado)
+
+driver.find_element(By.XPATH, ("//button[.='Start']")).click()
+
+repeticao = 0
+while repeticao < 11:
+
+  primeiro_nome = x.loc[repeticao]['First Name']
+  ultimo_nome = x.loc[repeticao]['Last Name ']
+  nome_empresa = x.loc[repeticao]['Company Name']
+  cargo = x.loc[repeticao]['Role in Company']
+  endereco = x.loc[repeticao]['Address']
+  email = x.loc[repeticao]['Email']
+  numero_telefone = x.loc[repeticao]['Phone Number']
 
 
+  preenche_dados('labelFirstName', primeiro_nome)
+  preenche_dados('labelLastName', ultimo_nome)
+  preenche_dados('labelCompanyName', nome_empresa)
+  preenche_dados('labelRole', cargo)
+  preenche_dados('labelAddress', endereco)
+  preenche_dados('labelEmail', email)
+  preenche_dados('labelPhone', str(numero_telefone))
 
-driver.find_element(By.XPATH, ("//input[@ng-reflect-name='labelFirstName']")).send_keys("Luan")
+  time.sleep(0.2)
+
+  driver.find_element(By.XPATH, ("//input[@value='Submit']")).click()
+
+  repeticao = repeticao + 1
+  
+  
+        
+
+
 
 #  driver.find_element(By.ID_NAME, "input").send_keys("TESTE PYTHON" + Keys.ENTER)
 # def preenche_dados(campo, dado):
@@ -28,8 +53,8 @@ driver.find_element(By.XPATH, ("//input[@ng-reflect-name='labelFirstName']")).se
 # Xpath =//tagname[@Attribute='value']
 
 
-  def preenche_dados(campo, dado):
-    for(rounds = 0; )
+#   def preenche_dados(campo, dado):
+#     for(rounds = 0; )
     
 
-print('Deu Certo!')
+# print('Deu Certo!')
