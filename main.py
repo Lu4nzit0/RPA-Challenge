@@ -1,26 +1,31 @@
 from selenium import webdriver
 from selenium.webdriver.common.by import By
-from selenium.webdriver.common.keys import Keys
 import time
 import pandas as pd
-import os.path
 import os
 
+os.system("TASKKILL /f /IM CHROME.EXE")
+
 driver = webdriver.Chrome()
+
 driver.implicitly_wait(10)
 
 driver.get("https://rpachallenge.com/")
 
-
 def download():
   driver.find_element(By.XPATH, (f"//a[@href='./assets/downloadFiles/challenge.xlsx']")).click()
 
+def waitFile(caminho):
+  while not os.path.exists(caminho):
+    time.sleep(1)
 
-if os.path.exists(r'C:\Users\Luan\Downloads\challenge.xlsx'):
+caminho_do_arquivo = r'C:\Users\Luan\Downloads\challenge.xlsx'
+
+if os.path.exists(caminho_do_arquivo):
   print("O arquivo já existe!")
-  os.remove(r'C:\Users\Luan\Downloads\challenge.xlsx')
+  os.remove(caminho_do_arquivo)
   download()
-  
+    
 else:
   print("O arquivo não existe!")
   print("Realizando download..")
@@ -31,9 +36,11 @@ def fill_in_fields(ng_reflect_name, dado):
 
 driver.find_element(By.XPATH, ("//button[.='Start']")).click()
 
-x = pd.read_excel(r'C:\Users\Luan\Downloads\challenge.xlsx', engine='openpyxl')
+waitFile(caminho_do_arquivo)
+
+x = pd.read_excel(caminho_do_arquivo, engine='openpyxl')
 rounds = 0
-while rounds < 11:
+while rounds < 10:
 
   primeiro_nome = x.loc[rounds]['First Name']
   ultimo_nome = x.loc[rounds]['Last Name ']
@@ -53,10 +60,4 @@ while rounds < 11:
 
   driver.find_element(By.XPATH, ("//input[@value='Submit']")).click()
 
-  rounds = rounds + 1    
- 
-
-# "//input[@ng-reflect-name='labelFirstName']"
-# Xpath =//tagname[@Attribute='value']
-
-
+  rounds = rounds + 1 
